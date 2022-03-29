@@ -24,7 +24,35 @@ class Department {
 	}
 }
 
+// inherit from class
+class ITDepartment extends Department {
+	admins: string[];
+	constructor(id: string, admins: string[]) {
+		super(id, "IT");
+		// calls constructer of base class
+		// must use super before this
+		this.admins = admins;
+	}
+}
+
+// special version of department
+// with special methods/properties
+class AccountingDepartment extends Department {
+	constructor(id: string, private reports: string[]) {
+		super(id, "Accounting");
+	}
+
+	addReport(text: string) {
+		this.reports.push(text);
+	}
+
+	printReports() {
+		console.log(this.reports);
+	}
+}
+
 const accounting = new Department("d1", "Accounting");
+const it = new ITDepartment("d1", ["Stasi"]);
 
 accounting.addEmployee("Jopo");
 accounting.addEmployee("Jele");
@@ -35,10 +63,21 @@ accounting.addEmployee("Jele");
 // turn into private property/field (line 3)
 // can only be accessed from inside class
 
-console.log(accounting);
-
 accounting.describe();
 accounting.printEmployeeInformation();
+
+it.describe();
+it.name = "NEW NAME";
+it.printEmployeeInformation();
+
+console.log(accounting);
+console.log(it);
+
+const accountingDept = new AccountingDepartment("d2", []);
+
+accountingDept.addReport("Something messed up :/");
+
+accountingDept.printReports();
 
 // const accountingCopy = { describe: accounting.describe };
 
