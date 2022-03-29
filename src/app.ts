@@ -49,6 +49,7 @@ class ITDepartment extends Department {
 // with special methods/properties
 class AccountingDepartment extends Department {
 	private lastReport: string;
+	private static instance: AccountingDepartment;
 
 	// getter. must return something.
 	get mostRecentReport() {
@@ -66,9 +67,19 @@ class AccountingDepartment extends Department {
 		this.addReport(value);
 	}
 
-	constructor(id: string, private reports: string[]) {
+	// create private constructor to ensure
+	// only one accounting dept is created
+	private constructor(id: string, private reports: string[]) {
 		super(id, "Accounting");
 		this.lastReport = reports[0];
+	}
+
+	static getInstance() {
+		if (this.instance) {
+			return this.instance;
+		}
+		this.instance = new AccountingDepartment("d2", []);
+		return this.instance;
 	}
 
 	// override Department describe method
@@ -100,7 +111,8 @@ console.log("Employee 1: ", employee1, Department.fiscalYear);
 // const accounting = new Department("d1", "Accounting");
 const it = new ITDepartment("d1", ["Stasi"]);
 
-const accounting = new AccountingDepartment("d2", []);
+// const accounting = new AccountingDepartment("d2", []);
+const accounting = AccountingDepartment.getInstance();
 
 // console.log(accounting.mostRecentReport);
 // getter accessed like property not method
