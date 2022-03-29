@@ -1,13 +1,20 @@
 class Department {
+	// static property
+	static fiscalYear = 2020;
 	// private id: string;
 	// private name: string;
-	private employees: string[] = [];
+	protected employees: string[] = [];
+	// protected allows access from extended classes
 
 	// shortcut for double initialisation
 	// private, public, readonly are TS not JS
 	constructor(private readonly id: string, public name: string) {
 		// this.id = id;
 		// this.name = n;
+	}
+	// make static to access without needing new keyword
+	static createEmployee(name: string) {
+		return { name: name };
 	}
 
 	describe(this: Department) {
@@ -38,12 +45,39 @@ class ITDepartment extends Department {
 // special version of department
 // with special methods/properties
 class AccountingDepartment extends Department {
+	private lastReport: string;
+
+	// getter. must return something.
+	get mostRecentReport() {
+		if (this.lastReport) {
+			return this.lastReport;
+		}
+		throw new Error("No report found.");
+	}
+
+	// setter. needs a value
+	set mostRecentReport(value: string) {
+		if (!value) {
+			throw new Error("Please pass in a valid value!");
+		}
+		this.addReport(value);
+	}
+
 	constructor(id: string, private reports: string[]) {
 		super(id, "Accounting");
+		this.lastReport = reports[0];
+	}
+
+	addEmployee(name: string) {
+		if (name === "Max") {
+			return;
+		}
+		this.employees.push(name);
 	}
 
 	addReport(text: string) {
 		this.reports.push(text);
+		this.lastReport = text;
 	}
 
 	printReports() {
@@ -51,11 +85,24 @@ class AccountingDepartment extends Department {
 	}
 }
 
-const accounting = new Department("d1", "Accounting");
+// use static method and property
+const employee1 = Department.createEmployee("Max");
+console.log("Employee 1: ", employee1, Department.fiscalYear);
+
+// const accounting = new Department("d1", "Accounting");
 const it = new ITDepartment("d1", ["Stasi"]);
 
-accounting.addEmployee("Jopo");
-accounting.addEmployee("Jele");
+const accounting = new AccountingDepartment("d2", []);
+
+// console.log(accounting.mostRecentReport);
+// getter accessed like property not method
+
+accounting.mostRecentReport = "Year End Report";
+accounting.addReport("Something messed up :/");
+accounting.printReports();
+
+accounting.addEmployee("Max");
+accounting.addEmployee("Mira");
 
 // accounting.employees[2] = "Annu";
 // alternative method to add
@@ -72,12 +119,6 @@ it.printEmployeeInformation();
 
 console.log(accounting);
 console.log(it);
-
-const accountingDept = new AccountingDepartment("d2", []);
-
-accountingDept.addReport("Something messed up :/");
-
-accountingDept.printReports();
 
 // const accountingCopy = { describe: accounting.describe };
 
