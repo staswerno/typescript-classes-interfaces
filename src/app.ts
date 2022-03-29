@@ -1,13 +1,17 @@
 class Department {
-	name: string;
+	// private id: string;
+	// private name: string;
 	private employees: string[] = [];
 
-	constructor(n: string) {
-		this.name = n;
+	// shortcut for double initialisation
+	// private, public, readonly are TS not JS
+	constructor(private readonly id: string, public name: string) {
+		// this.id = id;
+		// this.name = n;
 	}
 
 	describe(this: Department) {
-		console.log("Department: " + this.name);
+		console.log(`Department ${this.id}:  ${this.name}`);
 	}
 
 	addEmployee(employee: string) {
@@ -15,17 +19,17 @@ class Department {
 	}
 
 	printEmployeeInformation() {
-		console.log(this.employees.length);
+		console.log(`Employee length is ${this.employees.length}`);
 		console.log(this.employees);
 	}
 }
 
-const accounting = new Department("Accounting");
+const accounting = new Department("d1", "Accounting");
 
 accounting.addEmployee("Jopo");
 accounting.addEmployee("Jele");
 
-accounting.employees[2] = "Annu";
+// accounting.employees[2] = "Annu";
 // alternative method to add
 // we want to avoid this, have just one way
 // turn into private property/field (line 3)
