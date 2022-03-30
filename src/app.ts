@@ -2,6 +2,7 @@
 // interface only works in TS
 // not a blueprint, more a custom type
 // not same as type. int can only define object(/functions).
+// more common to use interfaces to define structure of objects
 
 // function example
 // type AddFn = (a: number, b: number) => number;
